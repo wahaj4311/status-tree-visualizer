@@ -1,0 +1,275 @@
+html, body {
+    height: 100%; /* Ensure body can take full height */
+    margin: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nicer font */
+    /* Subtle gradient background */
+    background: linear-gradient(to bottom, #4a505a, #282c34);
+    color: #abb2bf; /* Lighter text */
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Use viewport height */
+    padding: 0; /* Remove body padding */
+    overflow: hidden; /* Hide overflow to prevent scrollbars from tree positioning */
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+main {
+    flex-grow: 1; /* Allow main content to fill available space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Remove justify-content: center to allow tree to grow upwards */
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative; /* Needed for absolute positioning of tree */
+}
+
+h1 {
+    color: #98c379; /* Greenish title to match tree theme */
+    margin: 0; /* Remove default margin */
+    font-size: 1.8em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Add subtle shadow */
+}
+
+/* --- Tree Styles --- */
+.tree-container {
+    position: relative;
+    width: 100%;
+    height: 70%; /* Adjust height as needed */
+    max-height: 500px;
+    margin-top: 30px; /* Space from header */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Align tree to bottom */
+    animation: treeSway 8s infinite ease-in-out alternate; /* Gentle sway */
+}
+
+.tree {
+    position: relative;
+    width: 300px; /* Adjust width */
+    height: 100%;
+}
+
+.trunk {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 60%; /* Height of the trunk */
+    background-color: #5C3D2E; /* Brown color */
+    border-radius: 10px 10px 0 0;
+}
+
+.branches {
+    position: absolute;
+    bottom: 55%; /* Start branches near top of trunk */
+    left: 50%;
+    width: 100%;
+    height: 45%; /* Height area for branches */
+    transform: translateX(-50%);
+}
+
+.branch {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 8px; /* Branch thickness */
+    height: 100px; /* Branch length */
+    background-color: #5C3D2E;
+    border-radius: 4px;
+    transform-origin: bottom center;
+}
+
+/* Positioning specific branches */
+.branch-a { transform: rotate(-45deg) translateX(-60px); height: 90px; }
+.branch-b { transform: rotate(30deg) translateX(40px); height: 110px; }
+.branch-c { transform: rotate(-20deg) translateX(-30px); height: 120px; bottom: 10%; }
+.branch-d { transform: rotate(55deg) translateX(70px); height: 100px; bottom: 5%; }
+
+.leaf {
+    position: absolute;
+    top: -15px; /* Position leaf at the end of the branch */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    background-color: grey; /* Default: UNKNOWN */
+    border-radius: 50%; /* Circular leaf */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+    transition: background-color 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+    cursor: default;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.leaf .service-name {
+    /* Basic styling for letter inside leaf */
+}
+
+/* --- Status Colors & Effects --- */
+.leaf.status-UP {
+    background-color: #6cdb7e; /* Bright green */
+    transform: translateX(-50%) scale(1.1); /* Slightly larger when UP */
+    border-color: rgba(255, 255, 255, 0.6);
+    filter: drop-shadow(0 0 5px #98c379); /* Subtle glow */
+}
+
+.leaf.status-DOWN {
+    background-color: #d9534f; /* Red */
+    transform: translateX(-50%) scale(0.8); /* Smaller when DOWN (wilted) */
+    filter: grayscale(30%); /* Slightly desaturated */
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.leaf.status-UNKNOWN {
+    background-color: #888; /* Grey */
+    transform: translateX(-50%) scale(1);
+    filter: none;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- Tree Sway Animation --- */
+@keyframes treeSway {
+    from {
+        transform: rotate(-1deg);
+    }
+    to {
+        transform: rotate(1deg);
+    }
+}
+
+/* --- Legend Styling --- */
+.legend {
+    position: absolute; /* Position legend relative to main */
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(50, 50, 50, 0.7);
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    max-width: 200px;
+    text-align: left;
+    z-index: 10; /* Ensure legend is above tree */
+}
+
+.legend h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: #98c379; /* Greenish title */
+    text-align: center;
+}
+
+.legend ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.legend li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.legend li:last-child {
+    margin-bottom: 0;
+}
+
+.legend .color-box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+/* Color box styles matching face statuses */
+.legend .status-up {
+    background-color: rgba(40, 167, 69, 0.85);
+    border-color: #5cb85c;
+}
+
+.legend .status-down {
+    background-color: rgba(220, 53, 69, 0.85);
+    border-color: #d9534f;
+}
+
+.legend .status-unknown {
+    background-color: rgba(100, 100, 100, 0.85);
+    border-color: #888;
+}
+
+/* --- Log Box Styling --- */
+.log-box {
+    position: absolute;
+    bottom: 10px;
+    left: 10px; /* Position on the bottom left */
+    width: 300px; /* Adjust width */
+    height: 150px; /* Adjust height */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+    border: 1px solid #444;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8em;
+    z-index: 10; /* Ensure it's above tree */
+}
+
+.log-header {
+    background-color: #444;
+    color: #ccc;
+    padding: 4px 8px;
+    font-weight: bold;
+    border-bottom: 1px solid #555;
+    flex-shrink: 0;
+}
+
+.log-content {
+    flex-grow: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 5px 8px;
+    color: #ddd;
+    font-family: monospace; /* Use monospace font for logs */
+    line-height: 1.4;
+}
+
+.log-content p {
+    margin: 0 0 3px 0; /* Spacing between log lines */
+    white-space: pre-wrap; /* Wrap long lines */
+}
+
+.log-message-info {
+    color: #ccc;
+}
+
+.log-message-warn {
+    color: #f0e68c; /* Khaki */
+}
+
+.log-message-error {
+    color: #f48771; /* Light red */
+}
+
+/* Remove Honeycomb/Cube/Scene/Controls CSS */
+/* (Scene, Cube, Face, Controls, rotateCube animation definitions are removed) */ 

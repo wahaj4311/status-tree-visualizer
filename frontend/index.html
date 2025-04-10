@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservice Status Tree</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Microservice Status Tree</h1>
+    </header>
+
+    <main>
+        <!-- Living Tree Structure -->
+        <div class="tree-container">
+            <div class="tree">
+                <div class="trunk"></div>
+                <div class="branches">
+                    <!-- Branch for Service A -->
+                    <div class="branch branch-a" id="branch-Service-A">
+                        <div class="leaf" id="service-Service-A">
+                            <span class="service-name">A</span>
+                        </div>
+                    </div>
+                    <!-- Branch for Service B -->
+                    <div class="branch branch-b" id="branch-Service-B">
+                        <div class="leaf" id="service-Service-B">
+                            <span class="service-name">B</span>
+                        </div>
+                    </div>
+                    <!-- Branch for Service C -->
+                    <div class="branch branch-c" id="branch-Service-C">
+                        <div class="leaf" id="service-Service-C">
+                            <span class="service-name">C</span>
+                        </div>
+                    </div>
+                    <!-- Branch for Service D -->
+                    <div class="branch branch-d" id="branch-Service-D">
+                        <div class="leaf" id="service-Service-D">
+                            <span class="service-name">D</span>
+                        </div>
+                    </div>
+                    <!-- Add more branches here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <section class="legend">
+            <h2>Legend</h2>
+            <ul>
+                <li><span class="color-box status-up"></span> Service UP</li>
+                <li><span class="color-box status-down"></span> Service DOWN</li>
+                <li><span class="color-box status-unknown"></span> Status UNKNOWN</li>
+            </ul>
+        </section>
+
+        <!-- Log Box -->
+        <div id="log-box" class="log-box">
+            <div class="log-header">Live Logs</div>
+            <div id="log-content" class="log-content"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 
