@@ -66,12 +66,60 @@ This project demonstrates a simple microservice architecture with a live 3D cube
 
 ## Visualization
 
-*   The frontend displays a rotating 3D cube.
-*   Each face of the cube represents a microservice.
-*   Face colors indicate the service status:
-    *   Green: UP
-    *   Red: DOWN
-    *   Grey: UNKNOWN
-*   Hover over the cube to pause the animation and zoom slightly.
-*   Use the Play/Pause buttons to control the animation.
-*   Service text is displayed upside down for stylistic effect. 
+*   The frontend displays a stylized tree structure.
+*   Branches grow from a central trunk, each ending in a circular leaf representing a microservice (labeled A, B, C, D).
+*   Leaf colors and appearance indicate the service status:
+    *   **Green & Larger:** Service UP (with a subtle glow).
+    *   **Red & Smaller:** Service DOWN (appears slightly wilted/desaturated).
+    *   **Grey & Normal Size:** Status UNKNOWN.
+*   The entire tree has a gentle, continuous swaying animation.
+*   A live log box in the bottom-left corner shows WebSocket events and status updates.
+*   The legend in the bottom-right corner clarifies the status colors.
+
+## Technologies Used
+
+*   Node.js
+*   Express.js
+*   SQLite3 (for `service-a`)
+*   Axios (for HTTP requests in aggregator)
+*   ws (for WebSockets)
+*   HTML, CSS (with 3D Transforms), JavaScript
+
+## Running the Application
+
+1.  **Prerequisites**: Node.js and npm installed.
+2.  **Install Dependencies**: Run `npm install` within each service directory (`microservices/service-a`, `microservices/service-b`, `microservices/service-c`, `microservices/service-d`) and the `status-aggregator` directory.
+    ```bash
+    cd microservices/service-a && npm install
+    cd ../service-b && npm install
+    cd ../service-c && npm install # Add after creating service-c
+    cd ../service-d && npm install # Add after creating service-d
+    cd ../../status-aggregator && npm install
+    ```
+3.  **Start Services**: Open separate terminals for each component:
+    *   **Terminal 1 (Service A)**:
+        ```bash
+        cd microservices/service-a
+        node server.js
+        ```
+    *   **Terminal 2 (Service B)**:
+        ```bash
+        cd microservices/service-b
+        node server.js
+        ```
+    *   **Terminal 3 (Service C)**: (After creating)
+        ```bash
+        cd microservices/service-c
+        node server.js
+        ```
+    *   **Terminal 4 (Service D)**: (After creating)
+        ```bash
+        cd microservices/service-d
+        node server.js
+        ```
+    *   **Terminal 5 (Aggregator + Frontend)**:
+        ```bash
+        cd status-aggregator
+        node server.js
+        ```
+4.  **View**: Open your browser and navigate to `http://localhost:3000`. 
