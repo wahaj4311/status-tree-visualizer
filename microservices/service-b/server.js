@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const port = 3002; // Different port for Service B
+// const port = 3002; // Different port for Service B
+const port = process.env.PORT || 3002; // Use environment variable with fallback
 
 // Health check endpoint
 app.get('/health', (req, res) => {

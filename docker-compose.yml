@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  service-a:
+    build:
+      context: ./microservices/service-a
+      dockerfile: Dockerfile
+    container_name: service-a
+    ports:
+      - "3001:3001"
+    volumes:
+      # Mount the directory containing the db file to persist it
+      - ./microservices/service-a:/usr/src/app
+      # Exclude node_modules from being overwritten by the volume mount
+      - /usr/src/app/node_modules 
+    restart: unless-stopped
+
+  service-b:
+    build:
+      context: ./microservices/service-b
+      dockerfile: ../../Dockerfile.node-base # Use the base Dockerfile
+    container_name: service-b
+    ports:
+      - "3002:3002" # Map specific port for service B
+    environment:
+      # Example if port needed to be dynamic (requires code change in service)
+      # - PORT=3002
+      PORT: 3002 # Pass port as env var if server.js reads process.env.PORT
+    restart: unless-stopped
+    command: node server.js # Need to override CMD if port isn't read from env
+
+  service-c:
+    build:
+      context: ./microservices/service-c
+      dockerfile: ../../Dockerfile.node-base
+    container_name: service-c
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+    restart: unless-stopped
+    command: node server.js
+
+  service-d:
+    build:
+      context: ./microservices/service-d
+      dockerfile: ../../Dockerfile.node-base
+    container_name: service-d
+    ports:
+      - "3004:3004"
+    environment:
+      PORT: 3004
+    restart: unless-stopped
+    command: node server.js
+
+  status-aggregator:
+    build:
+      context: ./status-aggregator
+      dockerfile: Dockerfile
+    container_name: status-aggregator
+    ports:
+      - "3000:3000" # Expose frontend/websocket port
+    volumes:
+      # Mount the frontend directory so it's accessible
+      - ./frontend:/usr/src/app/frontend
+      # Exclude node_modules
+      - /usr/src/app/node_modules
+    depends_on:
+      - service-a
+      - service-b
+      - service-c
+      - service-d
+    restart: unless-stopped
+
+# Optional: Define a volume for the database if not mounting host directory
+# volumes:
+#   service_a_db: 

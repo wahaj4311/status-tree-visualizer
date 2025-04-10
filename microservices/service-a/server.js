@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose(); // Use verbose mode for more detai
 const path = require('path');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 const dbPath = path.resolve(__dirname, 'service_a.db'); // Database file in the service-a directory
 
 // Initialize and connect to the database

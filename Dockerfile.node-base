@@ -1,0 +1,24 @@
+# Use an official Node runtime as a parent image
+FROM node:23-slim
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json (if available)
+# Use wildcard to copy both if they exist
+COPY package*.json ./
+
+# Install app dependencies
+# Use --only=production if you don't need devDependencies
+RUN npm install
+
+# Bundle app source inside the Docker image
+COPY . .
+
+# Make port available to the world outside this container
+# The actual port will be defined by the service, e.g., 3002, 3003, 3004
+# We expose a common one here, but docker-compose will handle mapping
+EXPOSE 3000
+
+# Define the command to run your app
+CMD [ "node", "server.js" ] 
