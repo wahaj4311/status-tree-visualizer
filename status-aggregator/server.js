@@ -11,19 +11,27 @@ const wss = new WebSocket.Server({ server });
 const PORT = 3000;
 const CHECK_INTERVAL = 5000; // Check every 5 seconds
 
+// Debug logging for static file serving
+const frontendPath = path.join(__dirname, 'frontend');
+console.log('Serving static files from:', frontendPath);
+app.use(express.static(frontendPath));
+
+// Add a root route handler for debugging
+app.get('/', (req, res) => {
+  console.log('Received request for root route');
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
 // Define the microservices to monitor
 const services = [
-  { name: 'Service A', url: 'http://localhost:3001/health', status: 'UNKNOWN' },
-  { name: 'Service B', url: 'http://localhost:3002/health', status: 'UNKNOWN' },
-  { name: 'Service C', url: 'http://localhost:3003/health', status: 'UNKNOWN' },
-  { name: 'Service D', url: 'http://localhost:3004/health', status: 'UNKNOWN' },
+  { name: 'Service A', url: 'http://service-a:3001/health', status: 'UNKNOWN' },
+  { name: 'Service B', url: 'http://service-b:3002/health', status: 'UNKNOWN' },
+  { name: 'Service C', url: 'http://service-c:3003/health', status: 'UNKNOWN' },
+  { name: 'Service D', url: 'http://service-d:3004/health', status: 'UNKNOWN' },
   // Add more services here if needed
 ];
 
 let serviceStatus = services.map(s => ({ name: s.name, status: s.status }));
-
-// Serve the frontend static files
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // WebSocket connection handling
 wss.on('connection', (ws) => {
